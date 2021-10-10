@@ -19,6 +19,7 @@ import (
 func main() {
 	counts := make(map[string]int)
 	for _, filename := range os.Args[1:] {
+		// 一口气把全部输入数据读到内存中
 		data, err := ioutil.ReadFile(filename)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "dup3: %v\n", err)

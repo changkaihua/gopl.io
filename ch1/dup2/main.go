@@ -21,6 +21,7 @@ func main() {
 		countLines(os.Stdin, counts)
 	} else {
 		for _, arg := range files {
+			fmt.Println("file path:", arg)
 			f, err := os.Open(arg)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "dup2: %v\n", err)
@@ -38,9 +39,14 @@ func main() {
 }
 
 func countLines(f *os.File, counts map[string]int) {
+	// 以"流”模式读取输入
 	input := bufio.NewScanner(f)
 	for input.Scan() {
-		counts[input.Text()]++
+		word := input.Text()
+		counts[word]++
+		if counts[word] > 1 {
+			fmt.Printf("repeat word in file: %v\n", f.Name())
+		}
 	}
 	// NOTE: ignoring potential errors from input.Err()
 }
